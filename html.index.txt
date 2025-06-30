@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Aki’s Magical Birthday Gift</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Lock Screen -->
+  <div id="lock-screen">
+    <div class="lock-box">
+      <h2>Enter Password to Unlock</h2>
+      <input id="pwd" type="password" placeholder="Enter password" autocomplete="off" />
+      <button onclick="checkPwd()">Unlock</button>
+      <p id="error">Incorrect password, try again.</p>
+    </div>
+  </div>
+
+  <!-- Main Content (hidden initially) -->
+  <div id="site-content" class="hidden">
+    <!-- Starry Background Layers -->
+    <div class="stars"></div>
+    <div class="twinkling"></div>
+
+    <!-- Moon -->
+    <img src="https://i.imgur.com/CP9gIzJ.png" alt="Moon" class="moon" />
+
+    <!-- Fairy -->
+    <div class="fairy-container" id="fairy-container" onclick="fairyNextStep()">
+      <img src="https://i.imgur.com/VbXgBzy.png" alt="Fairy with wand" class="fairy" />
+      <div class="fairy-bubble" id="fairy-bubble">Welcome, dear! Please pick hearts from the jar below.</div>
+    </div>
+
+    <!-- Heart Jar -->
+    <div class="heart-jar" id="jar"></div>
+
+    <!-- Compliment popup -->
+    <div id="compliment-popup" class="compliment-popup hidden"></div>
+
+    <!-- Pari’s Letter Modal -->
+    <div id="pari-modal" class="modal hidden">
+      <div class="modal-content">
+        <span class="close" onclick="closePariMessage()">&times;</span>
+        <pre id="pari-letter" class="pari-letter">
+To My Love,
+
+As the clock struck 10:14 AM, the universe softly lit up because someone remarkable stepped into her twentieth year of life. You’ve walked through storms and sunshine, and with every step, you’ve grown into this soul who leaves light behind wherever she goes.
+
+You breathe life into people. You lift the air around you. And the funny thing is, you probably don’t even realise how much you mean to the ones who get to share space with you. Even if you catch a glimpse of it, I know you don't always see the full picture of what you give to this world.
+
+I can only speak for myself, and I’ll say it with everything I have. You are this arc in my life that stretches far and wide. You bring color and calm. You make surviving feel softer. The thought of life without your presence? I don't want to imagine that.
+
+I don’t need to talk to you every day or hear your voice constantly. What I do need is you in this world. Just existing. Just being you. And that’s more than enough for my heart to feel whole.
+
+I won’t talk about how beautiful you are on the outside. You already know that, or maybe you don’t. But honestly, what pulled me toward you from the very beginning was something much deeper. It was the way your soul glows. The way you care. The way your presence feels like home. You’re not defined by passing moments or snapshots. You’re defined by your ever-growing light. You’re not someone who fades. You’re someone who expands.
+
+You don’t have to say anything back. You don’t have to reply or explain. I just wanted to let you know, on your birthday, that you are incredibly loved. Not because of anything you do but because of everything you are.
+
+I love you in the kind of way that doesn’t shout. It just stays. Like a quiet song in the background that plays even when the room is empty.
+
+Happy Birthday, jaan. Always you, always here.
+
+I love you, love. Smile and be happy always. Thank you for being in my life.
+        </pre>
+      </div>
+    </div>
+
+    <!-- Background Music -->
+    <audio id="bg-music" loop preload="auto">
+      <source src="https://www.soundjay.com/misc/sounds/bell-ringing-05.wav" type="audio/wav" />
+      <source src="https://actions.google.com/sounds/v1/ambiences/forest_birds.ogg" type="audio/ogg" />
+      <source src="https://www2.cs.uic.edu/~i101/SoundFiles/BabyElephantWalk60.wav" type="audio/wav" />
+      Your browser does not support the audio element.
+    </audio>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

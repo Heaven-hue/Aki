@@ -1,0 +1,280 @@
+// Password protection
+const PASSWORD = "ILoveYouJaan";
+
+const lockScreen = document.getElementById("lock-screen");
+const passwordInput = document.getElementById("password-input");
+const submitBtn = document.getElementById("submit-btn");
+const warning = document.getElementById("warning");
+
+const fairyContainer = document.getElementById("fairy-container");
+const fairyBubble = document.getElementById("fairy-bubble");
+const jar = document.getElementById("jar");
+const popup = document.getElementById("compliment-popup");
+const letterContainer = document.getElementById("letter-container");
+const letterStepDiv = document.getElementById("letter-step");
+const nextBtn = document.getElementById("next-btn");
+const purpleHeart = document.getElementById("purple-heart");
+const finalMsg = document.getElementById("final-msg");
+
+const bgMusic = document.getElementById("bg-music");
+
+const compliments = [
+  "Your laugh brightens my darkest days",
+  "You have a heart of pure gold",
+  "Your smile makes the stars jealous",
+  "You inspire me in so many ways",
+  "Your kindness is a rare treasure",
+  "You light up every room you enter",
+  "Your strength amazes me every day",
+  "You make ordinary moments magical",
+  "Your eyes hold beautiful stories",
+  "You are my calm in every storm",
+  "Your creativity knows no bounds",
+  "You have the warmest embrace",
+  "Your voice is my favorite melody",
+  "You bring peace with your presence",
+  "Your courage inspires me endlessly",
+  "You are simply unforgettable",
+  "You make the world a better place",
+  "Your soul shines brighter than the moon",
+  "You are my sweetest daydream",
+  "Being with you feels like home"
+];
+
+let complimentIndex = 0;
+const totalHearts = compliments.length;
+
+// Letter split into steps for pagination
+const letterSteps = [
+`To My Love,
+
+As the clock struck 10:14 AM, the universe softly lit up because someone remarkable stepped into her twentieth year of life. You’ve walked through storms and sunshine, and with every step, you’ve grown into this soul who leaves light behind wherever she goes.`,
+
+`You breathe life into people. You lift the air around you. And the funny thing is, you probably don’t even realise how much you mean to the ones who get to share space with you. Even if you catch a glimpse of it, I know you don't always see the full picture of what you give to this world.`,
+
+`I can only speak for myself, and I’ll say it with everything I have. You are this arc in my life that stretches far and wide. You bring color and calm. You make surviving feel softer. The thought of life without your presence? I don't want to imagine that.`,
+
+`I don’t need to talk to you every day or hear your voice constantly. What I do need is you in this world. Just existing. Just being you. And that’s more than enough for my heart to feel whole.`,
+
+`I won’t talk about how beautiful you are on the outside. You already know that, or maybe you don’t. But honestly, what pulled me toward you from the very beginning was something much deeper. It was the way your soul glows. The way you care. The way your presence feels like home. You’re not defined by passing moments or snapshots. You’re defined by your ever-growing light. You’re not someone who fades. You’re someone who expands.`,
+
+`You don’t have to say anything back. You don’t have to reply or explain. I just wanted to let you know, on your birthday, that you are incredibly loved. Not because of anything you do but because of everything you are.`,
+
+`I love you in the kind of way that doesn’t shout. It just stays. Like a quiet song in the background that plays even when the room is empty.`,
+
+`Happy Birthday, jaan. Always you, always here.`
+];
+
+let currentLetterStep = 0;
+
+function showLetterStep() {
+  letterStepDiv.innerText = letterSteps[currentLetterStep];
+  if (currentLetterStep === letterSteps.length - 1) {
+    nextBtn.style.display = "none";
+    purpleHeart.classList.remove("hidden");
+  } else {
+    nextBtn.style.display = "inline-block";
+    purpleHeart.classList.add("hidden");
+  }
+}
+
+purpleHeart.addEventListener("click", () => {
+  letterContainer.classList.add("hidden");
+  showFinalMessage();
+});
+
+nextBtn.addEventListener("click", () => {
+  if (currentLetterStep < letterSteps.length - 1) {
+    currentLetterStep++;
+    showLetterStep();
+  }
+});
+
+// Final message loop
+function showFinalMessage() {
+  finalMsg.innerText = "I love you, Love! Remember that 💖";
+  finalMsg.classList.remove("hidden");
+  setTimeout(() => {
+    finalMsg.classList.add("hidden");
+    resetMagic();
+  }, 6000);
+}
+
+// Reset everything to start over
+function resetMagic() {
+  complimentIndex = 0;
+  finalMsg.classList.add("hidden");
+  fairyContainer.classList.remove("hidden");
+  letterContainer.classList.add("hidden");
+  popup.classList.add("hidden");
+  currentLetterStep = 0;
+  showLetterStep();
+  createHearts();
+  bgMusic.play();
+}
+
+// Create scattered star hearts
+function createHearts() {
+  // Create container if it doesn't exist
+  let heartContainer = document.querySelector('.heart-container');
+  if (!heartContainer) {
+    heartContainer = document.createElement('div');
+    heartContainer.classList.add('heart-container');
+    document.body.appendChild(heartContainer);
+  }
+  
+  heartContainer.innerHTML = "";
+  for (let i = 0; i < totalHearts; i++) {
+    const heart = document.createElement("div");
+    heart.classList.add("floating-heart");
+    heart.innerText = "⭐";
+    // Scatter across the screen with padding from edges and fairy area
+    let x, y;
+    const isMobile = window.innerWidth <= 600;
+    const padding = isMobile ? 30 : 50;
+    const bottomPadding = isMobile ? 150 : 200;
+    const topPadding = isMobile ? 80 : 100;
+    const fairyAvoidWidth = isMobile ? 250 : 350;
+    const fairyAvoidHeight = isMobile ? 200 : 250;
+    
+    do {
+      x = Math.random() * (window.innerWidth - padding * 2) + padding;
+      y = Math.random() * (window.innerHeight - bottomPadding) + topPadding;
+    } while (
+      // Avoid fairy area (adjusted for mobile)
+      (x < fairyAvoidWidth && y < fairyAvoidHeight)
+    );
+    heart.style.left = `${x}px`;
+    heart.style.top = `${y}px`;
+    heart.style.zIndex = 10 + i;
+    
+    // Add random movement delay
+    heart.style.animationDelay = `${Math.random() * 2}s`;
+    
+    heart.addEventListener("click", (e) => {
+      if (complimentIndex >= totalHearts) return;
+      
+      // Hide previous compliment
+      if (complimentIndex > 0) {
+        popup.style.opacity = 0;
+        setTimeout(() => popup.classList.add("hidden"), 300);
+      }
+      
+      setTimeout(() => {
+        showCompliment(e);
+      }, complimentIndex > 0 ? 400 : 0);
+      
+      animateHeart(e.target); // Trigger firework animation
+      complimentIndex++;
+      if (complimentIndex === totalHearts) {
+        // All done show letter
+        setTimeout(() => {
+          popup.style.opacity = 0;
+          setTimeout(() => popup.classList.add("hidden"), 300);
+          fairyContainer.classList.add("hidden");
+          heartContainer.style.display = 'none';
+          letterContainer.classList.remove("hidden");
+          showLetterStep();
+        }, 2000);
+      }
+    });
+    heartContainer.appendChild(heart);
+  }
+}
+
+function showCompliment(e) {
+  popup.innerText = compliments[complimentIndex];
+  
+  // Show popup temporarily to measure its dimensions
+  popup.classList.remove("hidden");
+  popup.style.opacity = 0;
+  popup.style.left = "0px";
+  popup.style.top = "0px";
+  
+  // Get actual popup dimensions
+  const popupRect = popup.getBoundingClientRect();
+  const popupWidth = popupRect.width;
+  const popupHeight = popupRect.height;
+  
+  // Calculate initial position
+  let left = e.pageX + 15;
+  let top = e.pageY - 30;
+  
+  // Ensure popup stays within screen bounds
+  const margin = 10; // Safety margin from screen edges
+  
+  // Check right edge
+  if (left + popupWidth > window.innerWidth - margin) {
+    left = e.pageX - popupWidth - 15;
+  }
+  
+  // Check left edge
+  if (left < margin) {
+    left = margin;
+  }
+  
+  // Check top edge
+  if (top < margin) {
+    top = e.pageY + 40;
+  }
+  
+  // Check bottom edge
+  if (top + popupHeight > window.innerHeight - margin) {
+    top = window.innerHeight - popupHeight - margin;
+  }
+  
+  // Final fallback - ensure it's never off screen
+  left = Math.max(margin, Math.min(left, window.innerWidth - popupWidth - margin));
+  top = Math.max(margin, Math.min(top, window.innerHeight - popupHeight - margin));
+  
+  popup.style.left = left + "px";
+  popup.style.top = top + "px";
+  popup.style.opacity = 1;
+  // Don't hide automatically - will hide when next heart is clicked
+}
+
+// Password check & unlock
+submitBtn.addEventListener("click", () => {
+  if (passwordInput.value === PASSWORD) {
+    lockScreen.classList.add("hidden");
+    startMagic();
+  } else {
+    warning.innerText = "Incorrect password, try again.";
+  }
+});
+
+passwordInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") submitBtn.click();
+});
+
+function startMagic() {
+  // Try to play music with better error handling
+  bgMusic.play().catch(error => {
+    console.log("Music autoplay blocked by browser. User can click to play manually.");
+    // Add a subtle music control hint
+    document.body.addEventListener('click', () => {
+      bgMusic.play();
+    }, { once: true });
+  });
+
+  fairyBubble.innerText = "Pari has a letter for you! Click on the stars to read"; // Update fairy message
+  fairyContainer.classList.remove("hidden");
+  createHearts();
+  showLetterStep();
+}
+
+function animateHeart(heart) {
+  // Random bright colors for firework
+  const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeaa7', '#dda0dd', '#ff7675', '#74b9ff', '#fd79a8', '#fdcb6e'];
+  const randomColor = colors[Math.random() * colors.length | 0];
+  
+  // Change to random color and start firework animation
+  heart.style.color = randomColor;
+  heart.style.filter = `drop-shadow(0 0 20px ${randomColor})`;
+  heart.classList.add('heart-exploding');
+  
+  // Remove after animation completes
+  setTimeout(() => {
+    heart.remove();
+  }, 1500);
+}
